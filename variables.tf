@@ -13,3 +13,8 @@ variable "kms_key_arn" {
   description = "KMS CMK used for any on-disk encryption supported."
   type        = string
 }
+
+variable "budget_thresholds" {
+  description = "json budget thresholds for accounts with budget other than 10.0"
+  default = {}
+}

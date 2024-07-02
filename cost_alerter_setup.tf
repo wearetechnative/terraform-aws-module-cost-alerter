@@ -22,6 +22,7 @@ module "cost_alerter_setup" {
 
   environment_variables = {
     "BUDGET_SNS_TOPIC" : module.sns_budget.sns_arn
+    "BUDGET_THRESHOLDS" : var.budget_thresholds
   }
 }
 
