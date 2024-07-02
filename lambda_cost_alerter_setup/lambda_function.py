@@ -15,7 +15,7 @@ sts_client = boto3.client("sts")
 # except FileNotFoundError:
 #     budget_thresholds = {}
 
-budget_thresholds = os.environ('BUDGET_THRESHOLDS')
+budget_thresholds = json.loads(os.environ('BUDGET_THRESHOLDS'))
 
 
 management_account_id = sts_client.get_caller_identity()["Account"]
