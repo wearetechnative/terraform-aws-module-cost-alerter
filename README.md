@@ -1,92 +1,13 @@
-> START INSTRUCTION FOR TECHNATIVE ENGINEERS
+# cost alerter
 
-# terraform-aws-module-template
+Automatically sets up and maintains per account cost usage alerts. Generally only works on management accounts.
 
-Template for creating a new TerraForm AWS Module. For TechNative Engineers.
+- Automatically as in: Add alerts for new accounts and remove alerts for existing accounts.
+- Usage defined as in: Costs controlled by usage only so excluding any tax and other incidental costs that are not related to use of AWS resources.
+- Alert defined as: All alerts are being send to `var.master_observability_receiver_account_id` to end up in our LZ OpsGenie setup.
 
-## Instructions
+When alerts occur the user is expected to re-evaluate based on the budget created and manually increase the threshold.
 
-### Your Module Name
+## When removing this module
 
-Think hard and come up with the shortest descriptive name for your module.
-Look at competition in the [terraform
-registry](https://registry.terraform.io/).
-
-Your module name should be max. three words seperated by dashes. E.g.
-
-- html-form-action
-- new-account-notifier
-- budget-alarms
-- fix-missing-tags
-
-### Setup Github Project
-
-1. Click the template button on the top right...
-1. Name github project `terraform-aws-[your-module-name]`
-1. Make project private untill ready for publication
-1. Add a description in the `About` section (top right)
-1. Add tags: `terraform`, `terraform-module`, `aws` and more tags relevant to your project: e.g. `s3`, `lambda`, `sso`, etc..
-1. Install `pre-commit`
-
-### Develop your module
-
-1. Develop your module
-1. Try to use the [best practices for TerraForm
-   development](https://www.terraform-best-practices.com/) and [TerraForm AWS
-   Development](https://github.com/ozbillwang/terraform-best-practices).
-
-## Finish project documentation
-
-1. Set well written title
-2. Add one or more shields
-3. Start readme with a short and complete as possible module description. This
-   is the part where you sell your module.
-4. Complete README with well written documentation. Try to think as a someone
-   with three months of Terraform experience.
-5. Check if pre-commit correctly generates the standard Terraform documentation.
-
-## Publish module
-
-If your module is in a state that it could be useful for others and ready for
-publication, you can publish a first version.
-
-1. Create a [Github
-   Release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
-2. Publish in the TerraForm Registry under the Technative Namespace (the GitHub
-   Repo must be in the TechNative Organization)
-
----
-
-> END INSTRUCTION FOR TECHNATIVE ENGINEERS
-
-
-# Terraform AWS [Module Name] ![](https://img.shields.io/github/workflow/status/TechNative-B-V/terraform-aws-module-name/tflint.yaml?style=plastic)
-
-<!-- SHIELDS -->
-
-This module implements ...
-
-[![](we-are-technative.png)](https://www.technative.nl)
-
-## How does it work
-
-### First use after you clone this repository or when .pre-commit-config.yaml is updated
-
-Run `pre-commit install` to install any guardrails implemented using pre-commit.
-
-See [pre-commit installation](https://pre-commit.com/#install) on how to install pre-commit.
-
-...
-
-## Usage
-
-To use this module ...
-
-```hcl
-{
-  some_conf = "might need explanation"
-}
-```
-
-<!-- BEGIN_TF_DOCS -->
-<!-- END_TF_DOCS -->
+Delete any budget alerts manually.

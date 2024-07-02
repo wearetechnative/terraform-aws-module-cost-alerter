@@ -1,0 +1,20 @@
+{
+	"Records": [{
+		"EventSource": "aws:sns",
+		"EventVersion": "1.0",
+		"EventSubscriptionArn": "arn:aws:sns:eu-central-1:617813585939:sns_budget-20230328094531880000000002:299bbd87-7429-4b73-9849-559c17d2baac",
+		"Sns": {
+			"Type": "Notification",
+			"MessageId": "b5e97b5c-4ac2-50f9-b13c-27c09623db08",
+			"TopicArn": "arn:aws:sns:eu-central-1:617813585939:sns_budget-20230328094531880000000002",
+			"Subject": "AWS Budgets: cost_alert_budget_782826450191_Tracklib_V1 has exceeded your alert threshold",
+			"Message": "AWS Budget Notification March 28, 2023\nAWS Account 617813585939\n\nDear AWS Customer,\n\nYou requested that we alert you when the ACTUAL Cost associated with your cost_alert_budget_782826450191_Tracklib_V1 budget is greater than $10.00 per day. Yesterday, the ACTUAL Cost associated with this budget is $246.90. You can find additional details below and by accessing the AWS Budgets dashboard [1].\n\nBudget Name: cost_alert_budget_782826450191_Tracklib_V1\nBudget Type: Cost\nBudgeted Amount: $10.00\nAlert Type: ACTUAL\nAlert Threshold: > $10.00\nACTUAL Amount: $246.90\n\n[1] https://console.aws.amazon.com/billing/home#/budgets\n",
+			"Timestamp": "2023-03-28T12:16:33.748Z",
+			"SignatureVersion": "1",
+			"Signature": "Dhw1XpGKi0PLolhSLYapP9UQ+E1PayP2sw8Gg14IWE8C//QEutvVULKnVp2xSInfSazuXblqnYI/6Mjf13nOqW6JwE/e3OKB3XUXx+6CHObTmU66WwlfaISb3oyJMiOl/dR9dkO5BAXeZZak8x435BmOOkPwceOQ3FXF69uYHPvE1HxxPdtSjW/iN4DttlSL3q6EPthsS9RuhwLS1NAV7ix/0TD2TyvgcLXlJhnbvRdP4pCw0EIKixRnd7cOJ9EDg2UgLiFOnF7QWPVq51mroKYrMVoAMHI4X4vunozV4fcLLYlIaWQjCf58Sa+JtqrUu5f5jQrMRYSz1mboYy4hTg==",
+			"SigningCertUrl": "https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-56e67fcb41f6fec09b0196692625d385.pem",
+			"UnsubscribeUrl": "https://sns.eu-central-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-central-1:617813585939:sns_budget-20230328094531880000000002:299bbd87-7429-4b73-9849-559c17d2baac",
+			"MessageAttributes": {}
+		}
+	}]
+}
