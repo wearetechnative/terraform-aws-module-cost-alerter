@@ -28,8 +28,7 @@ def lambda_handler(event, context):
                 'message': f"""
 ------------
 INSTRUCTIONS: Review the budget on {management_account_id}.
-If it's usage is within reasonable limits (e.g. research the increase) and it's actual usage then increase the threshold by directly editing the budget threshold in the console.
-If not inform and consult with the customer.
+If it's usage is within reasonable limits (e.g. research the increase) and it's actual usage then increase the threshold in budget_thresholds.json in the management account CodeCommit repo
 ------------
 
 
