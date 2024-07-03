@@ -7,17 +7,7 @@ organizations_client = boto3.client('organizations')
 budget_client = boto3.client('budgets')
 sts_client = boto3.client("sts")
 
-
-# ## change to variable in future, this is for testing only
-# try:
-#     with open('../budget_thresholds.json') as budget_thresholds_file:
-#         budget_thresholds = json.loads(budget_thresholds_file)
-# except FileNotFoundError:
-#     budget_thresholds = {}
-
-budget_thresholds = json.loads(os.environ('BUDGET_THRESHOLDS'))
-
-
+budget_thresholds = json.loads(os.environ['BUDGET_THRESHOLDS'])
 management_account_id = sts_client.get_caller_identity()["Account"]
 
 def lambda_handler(event, context):
@@ -86,105 +76,6 @@ def lambda_handler(event, context):
     print("Found budgets:")
     print(budget_list)
 
-    print("Creating new budgets.")
-
-    budget_version = "V1" # increment to recreate budgets on next run to apply new settings
-    default_amount = "10.0"
-
-    custom_budgets = []
-
-    for budget_threshold in budget_thresholds['Accounts']:
-        account_id = budget_threshold["Id"]
-        account_name = budget_threshold
-        custom_account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}_{budget_version}"
-        custom_budgets.append(custom_account_budget_name)
-
-    for account in account_list:
-        account_id = account["Id"]
-        account_name = account["Name"]
-        account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}_{budget_version}"
-
-        if account_budget_name in budget_list:
-            print(f"Up to date cost alert already exists for {account_id}.")
-            budget_list.remove(account_budget_name)
-        else:
-            print(f"No up to date cost alert found for {account_id}. Creating one as {account_budget_name}.")
-            if account_budget_name in custom_budgets:
-                amount = budget_thresholds['Accounts'][account_name]['Budget']
-            else:
-                amount = default_amount
-            old_budget = None
-
-            old_budget_list = list(filter(lambda x: x.startswith(f"{cost_alert_budget_prefix}_{account_id}_"), budget_list))
-            if len(old_budget_list) > 0:
-                old_budget = old_budget_list[0]
-
-            if old_budget != None:
-                response = budget_client.describe_budget(
-                    AccountId=management_account_id,
-                    BudgetName=old_budget
-                )
-
-                amount = response["Budget"]["BudgetLimit"]["Amount"]
-
-                print(f"Inheriting limit from old budget {old_budget} with value {amount}.")
-            else:
-                print(f"No old budget found for account {account_id}. Using default threshold {amount}.")
-
-            response = budget_client.create_budget(
-                AccountId=management_account_id,
-                Budget={
-                    'BudgetName': account_budget_name,
-                    'BudgetLimit': {
-                        'Amount': amount,
-                        'Unit': 'USD'
-                    },
-                    'CostFilters': {
-                        'LinkedAccount': [ account_id ]
-                    },
-                    'CostTypes': {
-                        'IncludeTax': False,
-                        'IncludeSubscription': False,
-                        'UseBlended': False,
-                        'IncludeRefund': False,
-                        'IncludeCredit': False,
-                        'IncludeUpfront': False,
-                        'IncludeRecurring': False,
-                        'IncludeOtherSubscription': False,
-                        'IncludeSupport': False,
-                        'IncludeDiscount': False,
-                        'UseAmortized': False
-                    },
-                    'TimeUnit': 'DAILY',
-                    'TimePeriod': {
-                        'Start': "2020-01-01T00:00:00+02:00",
-                        'End': "3706473600" # Unable to create/update budget - end time should not be after timestamp 3706473600
-                    },
-                    'BudgetType': 'COST'
-                },
-                NotificationsWithSubscribers=[
-                    {
-                        'Notification': {
-                            'NotificationType': 'ACTUAL',
-                            'ComparisonOperator': 'GREATER_THAN',
-                            'Threshold': 100.0,
-                            'ThresholdType': 'PERCENTAGE',
-                            'NotificationState': 'ALARM'
-                        },
-                        'Subscribers': [
-                            {
-                                'SubscriptionType': 'SNS',
-                                'Address': os.environ['BUDGET_SNS_TOPIC']
-                            },
-                        ]
-                    },
-                ]
-            )
-
-            print("Created new alarm.")
-
-    print("Deleting budgets from removed accounts or outdated budgets.")
-
     for budget in budget_list:
         print(f"Deleting budget {budget}.")
 
@@ -192,5 +83,82 @@ def lambda_handler(event, context):
             AccountId=management_account_id,
             BudgetName=budget
         )
+
+    print("Creating new budgets.")
+
+    default_amount = "10.0"
+
+    custom_budgets = []
+
+    for account in budget_thresholds['Accounts']:
+        account_id = budget_thresholds['Accounts'][account]['Id']
+        account_name = account
+        custom_account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}"
+        custom_budgets.append(custom_account_budget_name)
+    print("Custom Budgets:")
+    print(custom_budgets)
+
+    for account in account_list:
+        account_id = account["Id"]
+        account_name = account["Name"]
+        account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}"
+
+
+        if account_budget_name in custom_budgets:
+            amount = budget_thresholds['Accounts'][account_name]['Budget']
+        else:
+            amount = default_amount
+ 
+        response = budget_client.create_budget(
+            AccountId=management_account_id,
+            Budget={
+                'BudgetName': account_budget_name,
+                'BudgetLimit': {
+                    'Amount': amount,
+                    'Unit': 'USD'
+                },
+                'CostFilters': {
+                    'LinkedAccount': [ account_id ]
+                },
+                'CostTypes': {
+                    'IncludeTax': False,
+                    'IncludeSubscription': False,
+                    'UseBlended': False,
+                    'IncludeRefund': False,
+                    'IncludeCredit': False,
+                    'IncludeUpfront': False,
+                    'IncludeRecurring': False,
+                    'IncludeOtherSubscription': False,
+                    'IncludeSupport': False,
+                    'IncludeDiscount': False,
+                    'UseAmortized': False
+                },
+                'TimeUnit': 'DAILY',
+                'TimePeriod': {
+                    'Start': "2020-01-01T00:00:00+02:00",
+                    'End': "3706473600" # Unable to create/update budget - end time should not be after timestamp 3706473600
+                },
+                'BudgetType': 'COST'
+            },
+            NotificationsWithSubscribers=[
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 100.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                        },
+                    ]
+                },
+            ]
+        )
+
+        print("Created new alarm.")
 
     print("Done!")
