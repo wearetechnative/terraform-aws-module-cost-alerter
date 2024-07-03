@@ -8,6 +8,26 @@ Automatically sets up and maintains per account cost usage alerts. Generally onl
 
 When alerts occur the user is expected to re-evaluate based on the budget created and manually increase the threshold.
 
-## When removing this module
 
-Delete any budget alerts manually.
+## budget_thresholds variable structure:
+### Example:
+
+```
+{
+    "Accounts" : {
+        "Tracklib" : {                          <-- Account name needs to match account names in organizations
+            "Id" :      "782826450191", 
+            "Budget" :  "300.0"
+        },
+        "Tracklib Stage" : {
+            "Id" :      "323546098264",
+            "Budget" :  "11.0"
+        },
+        "Tracklib monitoring" : {
+            "Id" :      "055036331264",
+            "Budget" :  "15.0"
+        }
+    }
+
+}
+```

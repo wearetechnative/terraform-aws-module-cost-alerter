@@ -15,6 +15,6 @@ variable "kms_key_arn" {
 }
 
 variable "budget_thresholds" {
-  description = "json budget thresholds for accounts with budget other than 10.0"
+  description = "json budget thresholds for accounts with budget other than 10.0, structure: see README.md"
   default = {}
 }
