@@ -6,7 +6,8 @@ Automatically sets up and maintains per account cost usage alerts. Generally onl
 - Usage defined as in: Costs controlled by usage only so excluding any tax and other incidental costs that are not related to use of AWS resources.
 - Alert defined as: All alerts are being send to `var.master_observability_receiver_account_id` to end up in our LZ OpsGenie setup.
 
-When alerts occur the user is expected to re-evaluate based on the budget created and manually increase the threshold.
+When alerts occur the user is expected to re-evaluate based on the budget created and manually increase the threshold by creating or adjusting an 
+entry in the budgets_thresholds.json file that is passed to the budgets_thresholds variable from the clients management account's CodeCommit iac repository.
 
 
 ## budget_thresholds variable structure:
