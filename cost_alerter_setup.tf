@@ -3,7 +3,7 @@ locals {
 }
 
 module "cost_alerter_setup" {
-  source = "git@github.com:TechNative-B-V/terraform-aws-module-lambda.git?ref=c63e985e3926e359612a6c398a635d6a9fea5653"
+  source = "git@github.com:wearetechnative/terraform-aws-lambda.git?ref=ae0530a86c1eff7460d638e5ef885908ff5b8f88"
 
   name              = local.lambda_cost_alerter_function_name
   role_arn          = module.lambda_cost_alerter_setup_lambda_role.role_arn
@@ -27,7 +27,7 @@ module "cost_alerter_setup" {
 }
 
 module "lambda_cost_alerter_setup_lambda_role" {
-  source = "git@github.com:TechNative-B-V/terraform-aws-module-iam-role.git?ref=81c45f4d87bace3e990e64b92030292ac2fc480c"
+  source = "  git@github.com:wearetechnative/terraform-aws-iam-role.git?ref=0fe916c27097706237692122e09f323f55e8237e"
 
   role_name = "lambda_cost_alerter_setup_lambda_role"
   role_path = "/cost_alerter/"
