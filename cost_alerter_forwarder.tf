@@ -26,7 +26,7 @@ module "cost_alerter_forwarder" {
 }
 
 module "lambda_cost_alerter_forwarder_lambda_role" {
-  source = "  git@github.com:wearetechnative/terraform-aws-iam-role.git?ref=0fe916c27097706237692122e09f323f55e8237e"
+  source = "git@github.com:wearetechnative/terraform-aws-iam-role.git?ref=0fe916c27097706237692122e09f323f55e8237e"
 
   role_name = "lambda_cost_alerter_forwarder_lambda_role"
   role_path = "/cost_alerter/"
