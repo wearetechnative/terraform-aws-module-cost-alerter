@@ -1,5 +1,5 @@
 module "sns_budget" {
-  source = "git@github.com:wearetechnative/terraform-aws-sns.git?ref=9ba0b25ee91220deafa243d14b0ba935fad6cb85"
+  source = "github.com/wearetechnative/terraform-aws-sns.git?ref=f1e48225d81f77372fd002d5d257f0aaa80075bb"
   
   name        = "sns_budget"
   kms_key_arn = null
