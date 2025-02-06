@@ -156,9 +156,38 @@ def lambda_handler(event, context):
                         },
                     ]
                 },
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 200.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                        },
+                    ]
+                },
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 400.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                        },
+                    ]
+                },
             ]
         )
-
         print("Created new alarm.")
 
     print("Done!")
