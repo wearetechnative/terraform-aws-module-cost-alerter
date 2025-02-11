@@ -3,6 +3,9 @@ import boto3
 import os
 
 monitoring_account_sqs_url = os.environ['MONITORING_SQS_QUEUE_URL']
+sns_p1 = os.environ['SNS_P1']
+sns_p2 = os.environ['SNS_P2']
+sns_p3 = os.environ['SNS_P3']
 
 sts_client = boto3.client("sts")
 
@@ -14,13 +17,19 @@ sqs_client = boto3.client('sqs', region_name=monitoring_account_sqs_url.split(".
 def lambda_handler(event, context):
     print(event) # for easy debugging
     print(monitoring_account_sqs_url)
-
+    priority = ""
     try:
         for record in event["Records"]:
             sns_message = record["Sns"]
 
             budget_subject = sns_message["Subject"]
             budget_message = sns_message["Message"]
+            if sns_message["TopicArn"] == sns_p1:
+                priority = "P1"
+            elif sns_message["TopicArn"] == sns_p2:
+                priority = "P2"
+            else:
+                priority = "P3"
 
             sns_message = {
                 'direct_message': True,
@@ -44,7 +53,7 @@ ORIGINAL MESSAGE: {budget_message}
                 'client_name': "Technative_LandingZone",
                 'sla': '8x5',
                 'account_name': 'Management',
-                'priority': "P3"
+                'priority': priority
             }
 
             # Message must be string to be forwarded or else you will get a type error.

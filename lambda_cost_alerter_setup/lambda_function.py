@@ -152,7 +152,7 @@ def lambda_handler(event, context):
                     'Subscribers': [
                         {
                             'SubscriptionType': 'SNS',
-                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P3']
                         },
                     ]
                 },
@@ -167,7 +167,7 @@ def lambda_handler(event, context):
                     'Subscribers': [
                         {
                             'SubscriptionType': 'SNS',
-                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P2']
                         },
                     ]
                 },
@@ -182,7 +182,7 @@ def lambda_handler(event, context):
                     'Subscribers': [
                         {
                             'SubscriptionType': 'SNS',
-                            'Address': os.environ['BUDGET_SNS_TOPIC']
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P1']
                         },
                     ]
                 },
