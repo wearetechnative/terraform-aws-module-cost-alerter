@@ -64,8 +64,8 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p2" {
   })
 }
 
-resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p1" {
-  topic_arn = module.sns_budget_p1.sns_arn
+resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p3" {
+  topic_arn = module.sns_budget_p3.sns_arn
   protocol  = "lambda"
   endpoint  = module.cost_alerter_forwarder.lambda_function_arn
 
