@@ -75,7 +75,7 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p3" {
 }
 
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p1" {
-  statement_id  = "AllowExecutionFromCostAlerterForwarderSNSSource"
+  statement_id  = "AllowExecutionFromCostAlerterForwarderP1SNSSource"
   action        = "lambda:InvokeFunction"
   function_name = local.lambda_cost_alerter_forwarder_function_name
   principal     = "sns.amazonaws.com"
@@ -87,7 +87,7 @@ resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p1" {
 }
 
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p2" {
-  statement_id  = "AllowExecutionFromCostAlerterForwarderSNSSource"
+  statement_id  = "AllowExecutionFromCostAlerterForwarderP2SNSSource"
   action        = "lambda:InvokeFunction"
   function_name = local.lambda_cost_alerter_forwarder_function_name
   principal     = "sns.amazonaws.com"
@@ -99,7 +99,7 @@ resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p2" {
 }
 
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p3" {
-  statement_id  = "AllowExecutionFromCostAlerterForwarderSNSSource"
+  statement_id  = "AllowExecutionFromCostAlerterForwarderP3SNSSource"
   action        = "lambda:InvokeFunction"
   function_name = local.lambda_cost_alerter_forwarder_function_name
   principal     = "sns.amazonaws.com"
