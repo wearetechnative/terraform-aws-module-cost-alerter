@@ -3,6 +3,7 @@ import boto3
 import os
 
 monitoring_account_sqs_url = os.environ['MONITORING_SQS_QUEUE_URL']
+client_name = os.environ['CLIENT_NAME']
 sns_p1 = os.environ['SNS_P1']
 sns_p2 = os.environ['SNS_P2']
 sns_p3 = os.environ['SNS_P3']
@@ -50,7 +51,7 @@ ORIGINAL MESSAGE: {budget_message}
 """,
                 'account_id': management_account_id,
                 'alias': budget_subject,
-                'client_name': "Technative_LandingZone",
+                'client_name': client_name,
                 'sla': '8x5',
                 'account_name': 'Management',
                 'priority': priority

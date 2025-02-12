@@ -25,6 +25,7 @@ module "cost_alerter_forwarder" {
     "SNS_P1" : "${module.sns_budget_p1.sns_arn}"
     "SNS_P2" : "${module.sns_budget_p2.sns_arn}"
     "SNS_P3" : "${module.sns_budget_p3.sns_arn}"
+    "CLIENT_NAME" : "${var.client_name}"
   }
 }
 
