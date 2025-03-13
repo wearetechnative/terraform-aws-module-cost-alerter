@@ -21,7 +21,8 @@ module "cost_alerter_forwarder" {
   runtime     = "python3.9"
 
   environment_variables = {
-    "MONITORING_SQS_QUEUE_URL" : "https://${split(":", var.master_observability_receiver_sqs_arn)[2]}.${split(":", var.master_observability_receiver_sqs_arn)[3]}.amazonaws.com/${split(":", var.master_observability_receiver_sqs_arn)[4]}/${split(":", var.master_observability_receiver_sqs_arn)[5]}"
+    "NOTIFICATION_ENDPOINT" : var.notification_endpoint
+    "is_managed_service_client": var.is_managed_service_client
   }
 }
 
