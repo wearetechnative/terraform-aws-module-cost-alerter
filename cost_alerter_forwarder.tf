@@ -22,7 +22,7 @@ module "cost_alerter_forwarder" {
 
   environment_variables = {
     "NOTIFICATION_ENDPOINT" : var.notification_endpoint
-    "is_managed_service_client": var.is_managed_service_client
+    "is_managed_service_client" : var.is_managed_service_client
   }
 }
 
