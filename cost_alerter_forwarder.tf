@@ -22,7 +22,7 @@ module "cost_alerter_forwarder" {
 
   environment_variables = {
     "NOTIFICATION_ENDPOINT" : var.notification_endpoint
-    "is_managed_service_client" : var.is_managed_service_client
+    "IS_MANAGED_SERVICE_CLIENT" : var.is_managed_service_client
   }
 }
 
@@ -35,6 +35,7 @@ module "lambda_cost_alerter_forwarder_lambda_role" {
   aws_managed_policies = []
   customer_managed_policies = {
     "sqs_observability_receiver" : jsondecode(data.aws_iam_policy_document.sqs_observability_receiver.json)
+    "allow_sns_publish" : jsondecode(data.aws_iam_policy_document.allow_sns_publish.json)
   }
 
   trust_relationship = {
@@ -71,5 +72,15 @@ data "aws_iam_policy_document" "sqs_observability_receiver" {
     actions = ["sqs:SendMessage"]
 
     resources = [var.master_observability_receiver_sqs_arn]
+  }
+}
+
+data "aws_iam_policy_document" "allow_sns_publish" {
+  statement {
+    sid = "AllowSNSPublish"
+
+    actions = ["SNS:Publish"]
+
+    resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
   }
 }

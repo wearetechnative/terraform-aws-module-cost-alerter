@@ -187,7 +187,20 @@ def lambda_handler(event, context):
             response = send_notifications(clients, notification_endpoint, formatted_message)
     except:
 
-        # Sends message to the sqs url to the notification endpoint even if its not coming from an sns topic.
-        response = response = send_notifications(clients, notification_endpoint, json.dumps(event))
 
-        raise
+        # Sends sns message to the sqs url.
+        if notification_endpoint.startswith("https://sqs"):
+
+            # Sends message to the sqs url to the notification endpoint if the endpoint is sqs.
+            response = response = send_notifications(clients, notification_endpoint, json.dumps(event))
+            raise
+        elif notification_endpoint.startswith("arn:aws:sns"):
+
+            exception_message = {
+            'subject': f"There is an error with the Cost Alerter Lambda in the Management Account {management_account_id}.",
+            'message': f"{event}"
+            }
+
+            # Sends message to the sns topic to the notification endpoint if the endpoint is sns.
+            response = send_notifications(clients, notification_endpoint, exception_message)
+            raise
