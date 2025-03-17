@@ -76,7 +76,7 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
 #   })
 # }
 
-resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p1" {
+resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source" {
   for_each = module.sns_budget
   statement_id  = "AllowExecutionFromCostAlerterForwarderP1SNSSource"
   action        = "lambda:InvokeFunction"
