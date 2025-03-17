@@ -56,26 +56,6 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
   })
 }
 
-# resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p2" {
-#   topic_arn = module.sns_budget_p2.sns_arn
-#   protocol  = "lambda"
-#   endpoint  = module.cost_alerter_forwarder.lambda_function_arn
-
-#   redrive_policy = jsonencode({
-#     deadLetterTargetArn = var.sqs_dlq_arn
-#   })
-# }
-
-# resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source_p3" {
-#   topic_arn = module.sns_budget_p3.sns_arn
-#   protocol  = "lambda"
-#   endpoint  = module.cost_alerter_forwarder.lambda_function_arn
-
-#   redrive_policy = jsonencode({
-#     deadLetterTargetArn = var.sqs_dlq_arn
-#   })
-# }
-
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source" {
   for_each = module.sns_budget
   statement_id  = "AllowExecutionFromCostAlerterForwarder${each.key}SNSSource"
@@ -88,30 +68,6 @@ resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source" {
     module.cost_alerter_forwarder
   ]
 }
-
-# resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p2" {
-#   statement_id  = "AllowExecutionFromCostAlerterForwarderP2SNSSource"
-#   action        = "lambda:InvokeFunction"
-#   function_name = local.lambda_cost_alerter_forwarder_function_name
-#   principal     = "sns.amazonaws.com"
-#   source_arn    = module.sns_budget_p2.sns_arn
-
-#   depends_on = [
-#     module.cost_alerter_forwarder
-#   ]
-# }
-
-# resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source_p3" {
-#   statement_id  = "AllowExecutionFromCostAlerterForwarderP3SNSSource"
-#   action        = "lambda:InvokeFunction"
-#   function_name = local.lambda_cost_alerter_forwarder_function_name
-#   principal     = "sns.amazonaws.com"
-#   source_arn    = module.sns_budget_p3.sns_arn
-
-#   depends_on = [
-#     module.cost_alerter_forwarder
-#   ]
-# }
 
 data "aws_iam_policy_document" "sqs_observability_receiver" {
   statement {
