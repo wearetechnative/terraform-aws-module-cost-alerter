@@ -22,6 +22,10 @@ module "cost_alerter_forwarder" {
 
   environment_variables = {
     "MONITORING_SQS_QUEUE_URL" : "https://${split(":", var.master_observability_receiver_sqs_arn)[2]}.${split(":", var.master_observability_receiver_sqs_arn)[3]}.amazonaws.com/${split(":", var.master_observability_receiver_sqs_arn)[4]}/${split(":", var.master_observability_receiver_sqs_arn)[5]}"
+    "BUDGET_SNS_TOPIC_P1" : module.sns_budget["P1"].sns_arn
+    "BUDGET_SNS_TOPIC_P2" : module.sns_budget["P2"].sns_arn
+    "BUDGET_SNS_TOPIC_P3" : module.sns_budget["P3"].sns_arn
+    "CLIENT_NAME" : "${var.client_name}"
   }
 }
 
@@ -42,7 +46,8 @@ module "lambda_cost_alerter_forwarder_lambda_role" {
 }
 
 resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
-  topic_arn = module.sns_budget.sns_arn
+  for_each = module.sns_budget
+  topic_arn = each.value.sns_arn
   protocol  = "lambda"
   endpoint  = module.cost_alerter_forwarder.lambda_function_arn
 
@@ -52,11 +57,12 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
 }
 
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source" {
-  statement_id  = "AllowExecutionFromCostAlerterForwarderSNSSource"
+  for_each = module.sns_budget
+  statement_id  = "AllowExecutionFromCostAlerterForwarder${each.key}SNSSource"
   action        = "lambda:InvokeFunction"
   function_name = local.lambda_cost_alerter_forwarder_function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = module.sns_budget.sns_arn
+  source_arn    = each.value.sns_arn
 
   depends_on = [
     module.cost_alerter_forwarder

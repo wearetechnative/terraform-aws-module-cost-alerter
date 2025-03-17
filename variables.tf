@@ -18,3 +18,8 @@ variable "budget_thresholds" {
   description = "json budget thresholds for accounts with budget other than 10.0, structure: see README.md"
   default = {}
 }
+
+variable "client_name" {
+  description = "Name of the Client"
+  default = "Technative_LandingZone"
+}
