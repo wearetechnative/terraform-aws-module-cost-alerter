@@ -16,11 +16,13 @@ class LambdaContext():
     client_context='None'
     identity=CognitoIdentity()
 
-f = open("lambda_test_event.json", "r")
+f = open("./lambda_test_event.json", "r")
 event = json.loads(f.read())
 f.close()
 
-os.environ['MONITORING_SQS_QUEUE_URL'] = "https://sqs.eu-central-1.amazonaws.com/611159992020/sqs-opsgenie-lambda-queue-20220711145511259200000002"
+os.environ['NOTIFICATION_ENDPOINT'] = "https://sqs.eu-central-1.amazonaws.com/611159992020/sqs-opsgenie-lambda-queue-20220711145511259200000002"
+os.environ['IS_MANAGED_SERVICE_CLIENT'] = "true"
+
 
 from lambda_function import *
 

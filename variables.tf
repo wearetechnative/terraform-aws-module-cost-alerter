@@ -16,5 +16,16 @@ variable "kms_key_arn" {
 
 variable "budget_thresholds" {
   description = "json budget thresholds for accounts with budget other than 10.0, structure: see README.md"
-  default = {}
+  default     = {}
+}
+
+variable "notification_endpoint" {
+  description = "Can be a SNS topic ARN or SQS queue URL."
+  type        = string
+}
+
+variable "is_managed_service_client" {
+  description = "Is the endpoint a a managed service client."
+  type        = bool
+  default     = false
 }
