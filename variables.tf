@@ -16,12 +16,12 @@ variable "kms_key_arn" {
 
 variable "budget_thresholds" {
   description = "json budget thresholds for accounts with budget other than 10.0, structure: see README.md"
-  default = {}
+  default     = {}
 }
 
 variable "client_name" {
   description = "Name of the Client"
-  default = "Technative_LandingZone"
+  default     = "Technative_LandingZone"
 }
 
 variable "notification_endpoint" {

@@ -48,7 +48,7 @@ module "lambda_cost_alerter_forwarder_lambda_role" {
 }
 
 resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
-  for_each = module.sns_budget
+  for_each  = module.sns_budget
   topic_arn = each.value.sns_arn
   protocol  = "lambda"
   endpoint  = module.cost_alerter_forwarder.lambda_function_arn
@@ -59,7 +59,7 @@ resource "aws_sns_topic_subscription" "cost_alerter_forwarder_sns_source" {
 }
 
 resource "aws_lambda_permission" "cost_alerter_forwarder_sns_source" {
-  for_each = module.sns_budget
+  for_each      = module.sns_budget
   statement_id  = "AllowExecutionFromCostAlerterForwarder${each.key}SNSSource"
   action        = "lambda:InvokeFunction"
   function_name = local.lambda_cost_alerter_forwarder_function_name

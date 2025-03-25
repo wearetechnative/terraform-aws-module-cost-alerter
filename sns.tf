@@ -4,8 +4,8 @@ locals {
 
 module "sns_budget" {
   for_each = toset(local.priorities)
-  source = "github.com/wearetechnative/terraform-aws-sns.git?ref=f1e48225d81f77372fd002d5d257f0aaa80075bb"
-  
+  source   = "github.com/wearetechnative/terraform-aws-sns.git?ref=f1e48225d81f77372fd002d5d257f0aaa80075bb"
+
   name        = "sns_budget_${each.value}"
   kms_key_arn = null
   policy_allowed = {
