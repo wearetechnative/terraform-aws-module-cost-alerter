@@ -159,6 +159,8 @@ def lambda_handler(event, context):
 
     print(event) # for easy debugging
     
+    # set default priority
+    priority = "P3"
 
     # Setup clients and get environment variables
     clients, notification_endpoint = setup_clients()
