@@ -23,3 +23,14 @@ variable "client_name" {
   description = "Name of the Client"
   default = "Technative_LandingZone"
 }
+
+variable "notification_endpoint" {
+  description = "Can be a SNS topic ARN or SQS queue URL."
+  type        = string
+}
+
+variable "is_managed_service_client" {
+  description = "Is the endpoint a a managed service client."
+  type        = bool
+  default     = false
+}
