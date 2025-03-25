@@ -2,6 +2,10 @@ import json
 import boto3
 import os
 
+client_name = os.environ['CLIENT_NAME']
+sns_p1 = os.environ['BUDGET_SNS_TOPIC_P1']
+sns_p2 = os.environ['BUDGET_SNS_TOPIC_P2']
+sns_p3 = os.environ['BUDGET_SNS_TOPIC_P3']
 is_managed_service_client = os.environ['IS_MANAGED_SERVICE_CLIENT']
 
 """
@@ -38,7 +42,7 @@ def setup_clients():
     
     return clients, notification_endpoint
 
-def create_message_details(account_id, budget_subject, is_managed_service_client=False):
+def create_message_details(account_id, budget_subject, client_name, priority, is_managed_service_client=False):
     """
     Create message details dictionary based on account type.
     
@@ -59,16 +63,16 @@ def create_message_details(account_id, budget_subject, is_managed_service_client
         return {
             'account_id': account_id,
             'alias': budget_subject,
-            'client_name': "Technative_LandingZone",
+            'client_name': client_name,
             'sla': '8x5',
             'account_name': 'Management',
-            'priority': "P3"
+            'priority': priority
         }
     else:
         return {
             'account_id': account_id,
             'alias': budget_subject,
-            'account_name': 'Management'
+            'account_name': 'Management'            
         }
     
 def format_alert_message(account_id, budget_subject, budget_message, message_details, notification_endpoint):
@@ -154,6 +158,8 @@ def lambda_handler(event, context):
 
     print(event) # for easy debugging
     
+    # set default priority
+    priority = "P3"
 
     # Setup clients and get environment variables
     clients, notification_endpoint = setup_clients()
@@ -168,10 +174,18 @@ def lambda_handler(event, context):
             sns_message = record["Sns"]
             budget_subject = sns_message["Subject"]
             budget_message = sns_message["Message"]
+            if sns_message["TopicArn"] == sns_p1:
+                priority = "P1"
+            elif sns_message["TopicArn"] == sns_p2:
+                priority = "P2"
+            else:
+                priority = "P3"
 
             message_details = create_message_details(
                 management_account_id, 
-                budget_subject, 
+                budget_subject,
+                client_name,
+                priority,
                 is_managed_service_client
             )
 

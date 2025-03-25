@@ -19,6 +19,11 @@ variable "budget_thresholds" {
   default     = {}
 }
 
+variable "client_name" {
+  description = "Name of the Client"
+  default     = "Technative_LandingZone"
+}
+
 variable "notification_endpoint" {
   description = "Can be a SNS topic ARN or SQS queue URL."
   type        = string

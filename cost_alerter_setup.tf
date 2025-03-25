@@ -21,7 +21,9 @@ module "cost_alerter_setup" {
   runtime     = "python3.9"
 
   environment_variables = {
-    "BUDGET_SNS_TOPIC" : module.sns_budget.sns_arn
+    "BUDGET_SNS_TOPIC_P1" : module.sns_budget["P1"].sns_arn
+    "BUDGET_SNS_TOPIC_P2" : module.sns_budget["P2"].sns_arn
+    "BUDGET_SNS_TOPIC_P3" : module.sns_budget["P3"].sns_arn
     "BUDGET_THRESHOLDS" : var.budget_thresholds
   }
 }
