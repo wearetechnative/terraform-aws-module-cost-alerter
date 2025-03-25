@@ -43,7 +43,7 @@ def setup_clients():
     
     return clients, notification_endpoint
 
-def create_message_details(account_id, budget_subject, priority, is_managed_service_client=False):
+def create_message_details(account_id, budget_subject, client_name, priority, is_managed_service_client=False):
     """
     Create message details dictionary based on account type.
     
@@ -64,7 +64,7 @@ def create_message_details(account_id, budget_subject, priority, is_managed_serv
         return {
             'account_id': account_id,
             'alias': budget_subject,
-            'client_name': "Technative_LandingZone",
+            'client_name': client_name,
             'sla': '8x5',
             'account_name': 'Management',
             'priority': priority
@@ -185,6 +185,7 @@ def lambda_handler(event, context):
             message_details = create_message_details(
                 management_account_id, 
                 budget_subject,
+                client_name,
                 priority,
                 is_managed_service_client
             )
