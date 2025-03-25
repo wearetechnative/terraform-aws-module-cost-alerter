@@ -2,7 +2,6 @@ import json
 import boto3
 import os
 
-monitoring_account_sqs_url = os.environ['MONITORING_SQS_QUEUE_URL']
 client_name = os.environ['CLIENT_NAME']
 sns_p1 = os.environ['BUDGET_SNS_TOPIC_P1']
 sns_p2 = os.environ['BUDGET_SNS_TOPIC_P2']

@@ -21,7 +21,6 @@ module "cost_alerter_forwarder" {
   runtime     = "python3.9"
 
   environment_variables = {
-    "MONITORING_SQS_QUEUE_URL" : "https://${split(":", var.master_observability_receiver_sqs_arn)[2]}.${split(":", var.master_observability_receiver_sqs_arn)[3]}.amazonaws.com/${split(":", var.master_observability_receiver_sqs_arn)[4]}/${split(":", var.master_observability_receiver_sqs_arn)[5]}"
     "BUDGET_SNS_TOPIC_P1" : module.sns_budget["P1"].sns_arn
     "BUDGET_SNS_TOPIC_P2" : module.sns_budget["P2"].sns_arn
     "BUDGET_SNS_TOPIC_P3" : module.sns_budget["P3"].sns_arn
