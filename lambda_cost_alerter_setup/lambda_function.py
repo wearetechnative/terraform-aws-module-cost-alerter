@@ -86,35 +86,39 @@ def lambda_handler(event, context):
 
     print("Creating new budgets.")
 
-    default_amount = "10.0"
+    default_amount_daily = "10.0"
+    default_amount_monthly = "60.0"
 
     custom_budgets = []
 
     for account in budget_thresholds['Accounts']:
         account_id = budget_thresholds['Accounts'][account]['Id']
         account_name = account
-        custom_account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}"
-        custom_budgets.append(custom_account_budget_name)
+        custom_account_daily_budget_name = f"{cost_alert_budget_prefix}_daily_{account_id}_{account_name}"
+        custom_account_monthly_budget_name = f"{cost_alert_budget_prefix}_monthly_{account_id}_{account_name}"
+        custom_budgets.append(custom_account_daily_budget_name)
+        custom_budgets.append(custom_account_monthly_budget_name)
+
     print("Custom Budgets:")
     print(custom_budgets)
 
     for account in account_list:
         account_id = account["Id"]
         account_name = account["Name"]
-        account_budget_name = f"{cost_alert_budget_prefix}_{account_id}_{account_name}"
-
-
-        if account_budget_name in custom_budgets:
-            amount = budget_thresholds['Accounts'][account_name]['Budget']
+        account_daily_budget_name = f"{cost_alert_budget_prefix}_daily_{account_id}_{account_name}"
+        account_monthly_budget_name = f"{cost_alert_budget_prefix}_mothly_{account_id}_{account_name}"
+       
+        if account_daily_budget_name in custom_budgets:
+            amount_daily = budget_thresholds['Accounts'][account_name]['Daily_budget']
         else:
-            amount = default_amount
+            amount_daily = default_amount_daily
  
         response = budget_client.create_budget(
             AccountId=management_account_id,
             Budget={
-                'BudgetName': account_budget_name,
+                'BudgetName': account_daily_budget_name,
                 'BudgetLimit': {
-                    'Amount': amount,
+                    'Amount': amount_daily,
                     'Unit': 'USD'
                 },
                 'CostFilters': {
@@ -188,6 +192,91 @@ def lambda_handler(event, context):
                 },
             ]
         )
-        print("Created new alarm.")
+        print("Created new daily alarm.")
+        if account_monthly_budget_name in custom_budgets:
+            amount_monthly = budget_thresholds['Accounts'][account_name]['Monthly_budget']
+        else:
+            amount_monthly = default_amount_monthly
+ 
+        response = budget_client.create_budget(
+            AccountId=management_account_id,
+            Budget={
+                'BudgetName': account_monthly_budget_name,
+                'BudgetLimit': {
+                    'Amount': amount_monthly,
+                    'Unit': 'USD'
+                },
+                'CostFilters': {
+                    'LinkedAccount': [ account_id ]
+                },
+                'CostTypes': {
+                    'IncludeTax': False,
+                    'IncludeSubscription': False,
+                    'UseBlended': False,
+                    'IncludeRefund': False,
+                    'IncludeCredit': False,
+                    'IncludeUpfront': False,
+                    'IncludeRecurring': False,
+                    'IncludeOtherSubscription': False,
+                    'IncludeSupport': False,
+                    'IncludeDiscount': False,
+                    'UseAmortized': False
+                },
+                'TimeUnit': 'MONTHLY',
+                'TimePeriod': {
+                    'Start': "2020-01-01T00:00:00+02:00",
+                    'End': "3706473600" # Unable to create/update budget - end time should not be after timestamp 3706473600
+                },
+                'BudgetType': 'COST'
+            },
+            NotificationsWithSubscribers=[
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 100.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P3']
+                        },
+                    ]
+                },
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 200.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P2']
+                        },
+                    ]
+                },
+                {
+                    'Notification': {
+                        'NotificationType': 'ACTUAL',
+                        'ComparisonOperator': 'GREATER_THAN',
+                        'Threshold': 400.0,
+                        'ThresholdType': 'PERCENTAGE',
+                        'NotificationState': 'ALARM'
+                    },
+                    'Subscribers': [
+                        {
+                            'SubscriptionType': 'SNS',
+                            'Address': os.environ['BUDGET_SNS_TOPIC_P1']
+                        },
+                    ]
+                },
+            ]
+        )
+        print("Created new monthly alarm.")
 
     print("Done!")

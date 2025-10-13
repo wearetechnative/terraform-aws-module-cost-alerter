@@ -17,16 +17,19 @@ entry in the budgets_thresholds.json file that is passed to the budgets_threshol
 {
     "Accounts" : {
         "Tracklib" : {                          <-- Account name needs to match account names in organizations
-            "Id" :      "782826450191", 
-            "Budget" :  "300.0"
+            "Id" :             "782826450191", 
+            "Daily_budget" :   "300.0",
+            "Monthly_budget" : "1000.0"
         },
         "Tracklib Stage" : {
             "Id" :      "323546098264",
-            "Budget" :  "11.0"
+            "Daily_budget"" :  "11.0"
+            "Monthly_budget" : "40.0"
         },
         "Tracklib monitoring" : {
             "Id" :      "055036331264",
-            "Budget" :  "15.0"
+            "Daily_budget"" :  "15.0"
+            "Monthly_budget" : "40.0"
         }
     }
 
