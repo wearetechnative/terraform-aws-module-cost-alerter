@@ -106,7 +106,7 @@ def lambda_handler(event, context):
         account_id = account["Id"]
         account_name = account["Name"]
         account_daily_budget_name = f"{cost_alert_budget_prefix}_daily_{account_id}_{account_name}"
-        account_monthly_budget_name = f"{cost_alert_budget_prefix}_mothly_{account_id}_{account_name}"
+        account_monthly_budget_name = f"{cost_alert_budget_prefix}_monthly_{account_id}_{account_name}"
        
         if account_daily_budget_name in custom_budgets:
             amount_daily = budget_thresholds['Accounts'][account_name]['Daily_budget']
