@@ -72,7 +72,10 @@ def create_message_details(account_id, budget_subject, client_name, priority, is
         return {
             'account_id': account_id,
             'alias': budget_subject,
-            'account_name': 'Management'            
+            'client_name': client_name,
+            'sla': 'none',
+            'account_name': 'Management',
+            'priority': priority         
         }
     
 def format_alert_message(account_id, budget_subject, budget_message, message_details, notification_endpoint):
