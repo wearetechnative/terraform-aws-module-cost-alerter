@@ -1,4 +1,4 @@
-# Terraform AWS [Cost Alerter] ![](https://img.shields.io/github/workflow/status/wearetechnative/terraform-aws-module-cost-alerter/tflint.yaml?branch=main&style=plastic)
+# Terraform AWS [Cost Alerter] ![](https://img.shields.io/github/actions/workflow/status/wearetechnative/terraform-aws-module-cost-alerter/tflint.yaml?branch=main&style=plastic)
 
 Automatically sets up and maintains per account cost usage alerts. Generally only works on management accounts.
 
