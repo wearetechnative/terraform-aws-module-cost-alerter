@@ -16,11 +16,13 @@ variable "kms_key_arn" {
 
 variable "budget_thresholds" {
   description = "json budget thresholds for accounts with budget other than 10.0, structure: see README.md"
+  type        = any
   default     = {}
 }
 
 variable "client_name" {
   description = "Name of the Client"
+  type        = string
   default     = "Technative_LandingZone"
 }
 
